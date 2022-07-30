@@ -1,23 +1,29 @@
 #!/bin/bash
-# Additional wrapper to
+
+compfiles=("config.h"
+	   "st"
+	   "st.o"
+	   "x.o")
 
 function clean
 {
-	echo "Cleaning"
-	2>/dev/null 1>/dev/null rm config.h &
-	2>/dev/null 1>/dev/null rm st &
-	2>/dev/null 1>/dev/null rm st.o &
-	2>/dev/null 1>/dev/null rm x.o &
+	for file in "${compfiles[@]}"; do
+		if [ -f $file ]; then
+			echo "Removing $file"
+			sudo 2>/dev/null 1>/dev/null rm $file
+		fi
+	done
 }
 
 echo "Started"
-clean
 
+clean
 while getopts 'imu' OPTION; do
   case "$OPTION" in
     i)
       echo "Make and install"
       make && sudo make clean install
+      sudo clean
       ;;
     m)
       echo "Make only"
