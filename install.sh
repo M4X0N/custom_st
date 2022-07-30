@@ -23,7 +23,6 @@ while getopts 'imu' OPTION; do
     i)
       echo "Make and install"
       make && sudo make clean install
-      sudo clean
       ;;
     m)
       echo "Make only"
